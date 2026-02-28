@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Mini CRM — легкая CRM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        body {
+            background: #f4f6fa;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .app {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0b1b32;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #5a6a7e;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 16px;
+        }
+        .pricing {
+            background: #eef2f6;
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .plan {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: white;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .badge.free {
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+        .badge.pro {
+            background: #0b1b32;
+            color: white;
+            border: none;
+        }
+        .price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0b1b32;
+        }
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: #f0f3f7;
+            padding: 6px;
+            border-radius: 40px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 4px;
+            font-weight: 500;
+            border-radius: 30px;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            color: #4a5a6e;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: white;
+            color: #0b1b32;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            font-weight: 600;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .list-item {
+            background: #fafbfd;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e9edf2;
+        }
+        .item-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .item-info p {
+            font-size: 0.9rem;
+            color: #5f6c80;
+        }
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+        button {
+            background: white;
+            border: 1px solid #d0d9e4;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1e293b;
+        }
+        button.primary {
+            background: #0b1b32;
+            border-color: #0b1b32;
+            color: white;
+        }
+        button.small {
+            padding: 5px 12px;
+            font-size: 0.8rem;
+        }
+        .add-form {
+            background: #fafbfd;
+            border-radius: 20px;
+            padding: 18px;
+            margin: 20px 0 10px;
+            border: 1px dashed #cbd5e1;
+        }
+        .add-form input, .add-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #dce3ec;
+            border-radius: 40px;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            background: white;
+        }
+        .add-form textarea {
+            border-radius: 24px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .form-row button {
+            flex: 1;
+        }
+        .empty-state {
+            text-align: center;
+            color: #8a99aa;
+            padding: 30px 20px;
+            background: #f9fbfd;
+            border-radius: 28px;
+            font-size: 1rem;
+        }
+        .footer-note {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #8b99aa;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <h1>Simple CRM</h1>
+    <div class="subtitle">Управляй клиентами легко</div>
+
+    <!-- Блок тарифов (информационно) -->
+    <div class="pricing">
+        <div class="plan">
+            <span class="badge free">Бесплатно</span>
+            <span class="badge pro">PRO 990 ₽/мес</span>
+        </div>
+        <div class="price">до 10 контактов</div>
+    </div>
+
+    <!-- Вкладки -->
+    <div class="tabs">
+        <button class="tab active" data-tab="contacts">Контакты</button>
+        <button class="tab" data-tab="deals">Сделки</button>
+        <button class="tab" data-tab="notes">Заметки</button>
+    </div>
+
+    <!-- Раздел Контакты -->
+    <div id="contacts" class="section active">
+        <div id="contacts-list" class="list-container"></div>
+        <div class="add-form">
+            <input type="text" id="contact-name" placeholder="Имя *">
+            <input type="text" id="contact-company" placeholder="Компания">
+            <input type="tel" id="contact-phone" placeholder="Телефон">
+            <input type="email" id="contact-email" placeholder="Email">
+            <div class="form-row">
+                <button class="primary" id="add-contact-btn">➕ Добавить контакт</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Раздел Сделки -->
+    <div id="deals" class="section">
+        <div id="deals-list" class="list-container"></div>
+        <div class="add-form">
+            <input type="text" id="deal-title" placeholder="Название сделки *">
+            <input type="number" id="deal-value" placeholder="Сумма">
+            <select id="deal-stage" style="width:100%; padding:12px; border-radius:40px; border:1px solid #dce3ec; margin-bottom:12px;">
+                <option value="Переговоры">Переговоры</option>
+                <option value="Оценка">Оценка</option>
+                <option value="Успех">Успех</option>
+            </select>
+            <div class="form-row">
+                <button class="primary" id="add-deal-btn">➕ Добавить сделку</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Раздел Заметки -->
+    <div id="notes" class="section">
+        <div id="notes-list" class="list-container"></div>
+        <div class="add-form">
+            <input type="text" id="note-title" placeholder="Заголовок заметки">
+            <textarea id="note-content" placeholder="Текст заметки"></textarea>
+            <div class="form-row">
+                <button class="primary" id="add-note-btn">➕ Добавить заметку</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        ✨ Данные сохраняются в вашем браузере (localStorage). Позже можно подключить сервер.
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ----- Хранилище (адаптер) -----
+        class Storage {
+            static get(key) {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            }
+            static set(key, value) {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
+        }
+
+        // ----- Модели данных (ключи) -----
+        const STORAGE_KEYS = {
+            CONTACTS: 'crm_contacts',
+            DEALS: 'crm_deals',
+            NOTES: 'crm_notes'
+        };
+
+        // ----- Начальные данные, если пусто -----
+        if (Storage.get(STORAGE_KEYS.CONTACTS).length === 0) {
+            Storage.set(STORAGE_KEYS.CONTACTS, [
+                { id: Date.now() + 1, name: 'Иван Петров', company: 'ООО "Ромашка"', phone: '+7 999 123-45-67', email: 'ivan@example.com' }
+            ]);
+        }
+        if (Storage.get(STORAGE_KEYS.DEALS).length === 0) {
+            Storage.set(STORAGE_KEYS.DEALS, [
+                { id: Date.now() + 2, title: 'Сайт для магазина', value: 150000, stage: 'Переговоры' }
+            ]);
+        }
+        if (Storage.get(STORAGE_KEYS.NOTES).length === 0) {
+            Storage.set(STORAGE_KEYS.NOTES, [
+                { id: Date.now() + 3, title: 'Идея', content: 'Добавить интеграцию с Telegram' }
+            ]);
+        }
+
+        // ----- Вспомогательные функции -----
+        function generateId() {
+            return Date.now() + Math.floor(Math.random() * 1000);
+        }
+
+        // ----- Рендеринг -----
+        function renderContacts() {
+            const container = document.getElementById('contacts-list');
+            const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+            if (contacts.length === 0) {
+                container.innerHTML = '<div class="empty-state">🤷 Нет контактов. Добавьте первый!</div>';
+                return;
+            }
+            container.innerHTML = contacts.map(contact => `
+                <div class="list-item" data-id="${contact.id}">
+                    <div class="item-info">
+                        <h4>${escapeHtml(contact.name)}</h4>
+                        <p>${escapeHtml(contact.company || '—')}  |  ${escapeHtml(contact.phone || '—')}  |  ${escapeHtml(contact.email || '—')}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="small edit-contact" data-id="${contact.id}">✎</button>
+                        <button class="small delete-contact" data-id="${contact.id}">✕</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDeals() {
+            const container = document.getElementById('deals-list');
+            const deals = Storage.get(STORAGE_KEYS.DEALS);
+            if (deals.length === 0) {
+                container.innerHTML = '<div class="empty-state">💼 Нет сделок. Создайте первую!</div>';
+                return;
+            }
+            container.innerHTML = deals.map(deal => `
+                <div class="list-item" data-id="${deal.id}">
+                    <div class="item-info">
+                        <h4>${escapeHtml(deal.title)}</h4>
+                        <p>💰 ${deal.value ? Number(deal.value).toLocaleString() + ' ₽' : 'сумма не указана'}  |  этап: ${escapeHtml(deal.stage)}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="small edit-deal" data-id="${deal.id}">✎</button>
+                        <button class="small delete-deal" data-id="${deal.id}">✕</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notes-list');
+            const notes = Storage.get(STORAGE_KEYS.NOTES);
+            if (notes.length === 0) {
+                container.innerHTML = '<div class="empty-state">📝 Нет заметок. Добавьте!</div>';
+                return;
+            }
+            container.innerHTML = notes.map(note => `
+                <div class="list-item" data-id="${note.id}">
+                    <div class="item-info">
+                        <h4>${escapeHtml(note.title || 'Без заголовка')}</h4>
+                        <p>${escapeHtml(note.content || '').substring(0, 60)}${note.content?.length > 60 ? '…' : ''}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="small edit-note" data-id="${note.id}">✎</button>
+                        <button class="small delete-note" data-id="${note.id}">✕</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Простой escape для XSS
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // ----- Добавление контакта -----
+        document.getElementById('add-contact-btn').addEventListener('click', () => {
+            const name = document.getElementById('contact-name').value.trim();
+            if (!name) {
+                alert('Введите имя');
+                return;
+            }
+            const company = document.getElementById('contact-company').value.trim();
+            const phone = document.getElementById('contact-phone').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+
+            const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+            const newContact = {
+                id: generateId(),
+                name,
+                company,
+                phone,
+                email
+            };
+            contacts.push(newContact);
+            Storage.set(STORAGE_KEYS.CONTACTS, contacts);
+            renderContacts();
+
+            // очистить поля
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-company').value = '';
+            document.getElementById('contact-phone').value = '';
+            document.getElementById('contact-email').value = '';
+        });
+
+        // ----- Добавление сделки -----
+        document.getElementById('add-deal-btn').addEventListener('click', () => {
+            const title = document.getElementById('deal-title').value.trim();
+            if (!title) {
+                alert('Введите название сделки');
+                return;
+            }
+            const value = parseFloat(document.getElementById('deal-value').value) || 0;
+            const stage = document.getElementById('deal-stage').value;
+
+            const deals = Storage.get(STORAGE_KEYS.DEALS);
+            const newDeal = {
+                id: generateId(),
+                title,
+                value,
+                stage
+            };
+            deals.push(newDeal);
+            Storage.set(STORAGE_KEYS.DEALS, deals);
+            renderDeals();
+
+            document.getElementById('deal-title').value = '';
+            document.getElementById('deal-value').value = '';
+            // select остаётся на значении по умолчанию, можно не менять
+        });
+
+        // ----- Добавление заметки -----
+        document.getElementById('add-note-btn').addEventListener('click', () => {
+            const title = document.getElementById('note-title').value.trim();
+            const content = document.getElementById('note-content').value.trim();
+            if (!title && !content) {
+                alert('Заполните хотя бы заголовок или текст');
+                return;
+            }
+            const notes = Storage.get(STORAGE_KEYS.NOTES);
+            const newNote = {
+                id: generateId(),
+                title,
+                content
+            };
+            notes.push(newNote);
+            Storage.set(STORAGE_KEYS.NOTES, notes);
+            renderNotes();
+
+            document.getElementById('note-title').value = '';
+            document.getElementById('note-content').value = '';
+        });
+
+        // ----- Обработка удаления и редактирования (делегирование событий) -----
+        document.addEventListener('click', (e) => {
+            // Удаление контакта
+            if (e.target.classList.contains('delete-contact')) {
+                const id = Number(e.target.dataset.id);
+                let contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+                contacts = contacts.filter(c => c.id !== id);
+                Storage.set(STORAGE_KEYS.CONTACTS, contacts);
+                renderContacts();
+            }
+            // Удаление сделки
+            if (e.target.classList.contains('delete-deal')) {
+                const id = Number(e.target.dataset.id);
+                let deals = Storage.get(STORAGE_KEYS.DEALS);
+                deals = deals.filter(d => d.id !== id);
+                Storage.set(STORAGE_KEYS.DEALS, deals);
+                renderDeals();
+            }
+            // Удаление заметки
+            if (e.target.classList.contains('delete-note')) {
+                const id = Number(e.target.dataset.id);
+                let notes = Storage.get(STORAGE_KEYS.NOTES);
+                notes = notes.filter(n => n.id !== id);
+                Storage.set(STORAGE_KEYS.NOTES, notes);
+                renderNotes();
+            }
+
+            // Редактирование (упрощённо: через prompt, для мобильности)
+            if (e.target.classList.contains('edit-contact')) {
+                const id = Number(e.target.dataset.id);
+                let contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+                const contact = contacts.find(c => c.id === id);
+                if (!contact) return;
+
+                const newName = prompt('Имя', contact.name);
+                if (newName !== null) {
+                    contact.name = newName.trim() || contact.name;
+                    contact.company = prompt('Компания', contact.company) || contact.company;
+                    contact.phone = prompt('Телефон', contact.phone) || contact.phone;
+                    contact.email = prompt('Email', contact.email) || contact.email;
+                    Storage.set(STORAGE_KEYS.CONTACTS, contacts);
+                    renderContacts();
+                }
+            }
+
+            if (e.target.classList.contains('edit-deal')) {
+                const id = Number(e.target.dataset.id);
+                let deals = Storage.get(STORAGE_KEYS.DEALS);
+                const deal = deals.find(d => d.id === id);
+                if (!deal) return;
+
+                const newTitle = prompt('Название сделки', deal.title);
+                if (newTitle !== null) {
+                    deal.title = newTitle.trim() || deal.title;
+                    const newValue = prompt('Сумма', deal.value);
+                    deal.value = newValue ? parseFloat(newValue) : deal.value;
+                    deal.stage = prompt('Этап (Переговоры/Оценка/Успех)', deal.stage) || deal.stage;
+                    Storage.set(STORAGE_KEYS.DEALS, deals);
+                    renderDeals();
+                }
+            }
+
+            if (e.target.classList.contains('edit-note')) {
+                const id = Number(e.target.dataset.id);
+                let notes = Storage.get(STORAGE_KEYS.NOTES);
+                const note = notes.find(n => n.id === id);
+                if (!note) return;
+
+                const newTitle = prompt('Заголовок', note.title);
+                if (newTitle !== null) {
+                    note.title = newTitle.trim();
+                    note.content = prompt('Текст заметки', note.content) || note.content;
+                    Storage.set(STORAGE_KEYS.NOTES, notes);
+                    renderNotes();
+                }
+            }
+        });
+
+        // ----- Переключение вкладок -----
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const targetId = tab.dataset.tab;
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                // Перерендерить активный раздел (на всякий случай)
+                if (targetId === 'contacts') renderContacts();
+                if (targetId === 'deals') renderDeals();
+                if (targetId === 'notes') renderNotes();
+            });
+        });
+
+        // ----- Первоначальный рендер -----
+        renderContacts();
+        renderDeals();
+        renderNotes();
+    })();
+</script>
+</body>
+  </html>
