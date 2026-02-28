@@ -3,682 +3,864 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Моя простая CRM — красиво и понятно</title>
+    <title>Simple CRM — понятная CRM для продаж</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: system-ui, -apple-system, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
+
         body {
-            background: linear-gradient(145deg, #f0f4ff 0%, #f8fafc 100%);
+            background: linear-gradient(145deg, #f6f8fc 0%, #edf1f8 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 16px;
         }
+
         .app {
-            max-width: 600px;
+            max-width: 1200px;
             width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Адаптация для телефона */
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+        }
+
+        /* Шапка */
+        .header {
             background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 42px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.02);
-            padding: 24px;
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 4px;
-            letter-spacing: -0.02em;
-        }
-        .subtitle {
-            color: #64748b;
-            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 16px 24px;
             margin-bottom: 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
         }
-        .help-btn {
-            background: #eef2ff;
-            border: none;
-            width: 36px;
-            height: 36px;
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1a2b4c, #2c3e6e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .pricing-badge {
+            background: white;
             border-radius: 40px;
+            padding: 12px 20px;
             display: flex;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .plan-tag {
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .plan-tag.free {
+            background: #f0f3f7;
+            color: #334155;
+        }
+
+        .plan-tag.pro {
+            background: #1a2b4c;
+            color: white;
+        }
+
+        .counter {
+            color: #4a5a6e;
+            font-weight: 500;
+        }
+
+        /* Обучение (тур) */
+        .tour-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            color: #4f46e5;
+        }
+
+        .tour-card {
+            background: white;
+            border-radius: 40px;
+            max-width: 400px;
+            width: 90%;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .tour-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .tour-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a2b4c;
+            margin-bottom: 12px;
+        }
+
+        .tour-desc {
+            color: #5f6c80;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .tour-feature {
+            background: #f0f7ff;
+            border-radius: 30px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: left;
+        }
+
+        .tour-feature p {
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tour-button {
+            background: #1a2b4c;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 32px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
             cursor: pointer;
             transition: 0.2s;
         }
-        .help-btn:hover {
-            background: #dbeafe;
-            transform: scale(1.05);
+
+        .tour-button:hover {
+            background: #2c3e6e;
+            transform: scale(1.02);
         }
-        .pricing-card {
-            background: white;
-            border-radius: 30px;
-            padding: 16px 20px;
+
+        /* Подсказки для первого раза */
+        .hint {
+            background: #e8f0fe;
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(203, 213, 225, 0.4);
-        }
-        .plan-badge {
-            display: flex;
-            gap: 10px;
-        }
-        .badge {
-            border-radius: 40px;
-            padding: 6px 14px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: -0.01em;
-        }
-        .badge.free {
-            background: #f1f5f9;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-        }
-        .badge.pro {
-            background: #0f172a;
-            color: white;
-        }
-        .counter {
-            font-weight: 700;
-            color: #0f172a;
-            background: #f8fafc;
-            padding: 4px 12px;
-            border-radius: 40px;
+            gap: 12px;
+            border-left: 5px solid #1a2b4c;
             font-size: 0.95rem;
         }
+
+        /* Основной контейнер вкладок */
+        .tabs-container {
+            background: white;
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
         .tabs {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             margin-bottom: 24px;
-            background: #f1f5f9;
+            background: #f0f4fa;
             padding: 6px;
-            border-radius: 40px;
+            border-radius: 60px;
+            flex-wrap: wrap;
         }
+
         .tab {
-            flex: 1;
+            flex: 1 1 auto;
             text-align: center;
-            padding: 12px 6px;
+            padding: 14px 16px;
             font-weight: 600;
-            border-radius: 34px;
+            border-radius: 60px;
             background: transparent;
             border: none;
-            font-size: 0.95rem;
-            color: #475569;
+            font-size: 1rem;
+            color: #4a5a6e;
             transition: 0.2s;
             cursor: pointer;
             white-space: nowrap;
         }
+
         .tab.active {
             background: white;
-            color: #0f172a;
-            box-shadow: 0 6px 12px -8px #0f172a20;
+            color: #1a2b4c;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.05);
         }
+
         .section {
             display: none;
-            animation: fade 0.2s ease;
         }
+
         .section.active {
             display: block;
         }
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Quick actions */
-        .quick-actions {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-        .quick-btn {
-            flex: 1 1 130px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 60px;
-            padding: 14px 10px;
-            font-weight: 600;
-            font-size: 1rem;
-            color: #1e293b;
-            box-shadow: 0 4px 10px -4px rgba(0,0,0,0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: 0.15s;
-            cursor: pointer;
-        }
-        .quick-btn:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-            transform: scale(0.98);
-        }
+
+        /* Главный экран (дашборд) */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
+
         .stat-card {
-            background: white;
+            background: #f8faff;
             border-radius: 28px;
-            padding: 18px 8px;
+            padding: 20px 16px;
             text-align: center;
-            box-shadow: 0 6px 14px -8px #0f172a20;
-            border: 1px solid #f0f3f7;
+            border: 1px solid #eef2f6;
+            transition: 0.2s;
         }
+
         .stat-value {
             font-size: 2.2rem;
             font-weight: 700;
-            color: #0f172a;
-            line-height: 1.1;
+            color: #1a2b4c;
+            line-height: 1.2;
         }
+
         .stat-label {
-            font-size: 0.8rem;
-            color: #64748b;
-            font-weight: 500;
+            font-size: 0.9rem;
+            color: #5f6c80;
+            margin-top: 4px;
         }
+
+        .dashboard-card {
+            background: #f8faff;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eef2f6;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Напоминалки */
         .reminder-item {
             background: white;
             border-radius: 20px;
-            padding: 14px 16px;
-            margin-bottom: 8px;
+            padding: 16px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 5px solid #4f46e5;
-            box-shadow: 0 4px 10px -6px #0f172a30;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border-left: 4px solid #1a2b4c;
         }
-        .reminder-title {
-            font-weight: 600;
-            color: #0f172a;
+
+        .reminder-item.urgent {
+            border-left-color: #e53e3e;
         }
+
+        .reminder-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
         .reminder-date {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 4px;
+            font-size: 0.85rem;
+            color: #5f6c80;
         }
+
+        /* Поиск */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        /* Списки */
         .list-container {
-            margin-bottom: 16px;
-            max-height: 380px;
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 4px;
+            margin-bottom: 20px;
         }
-        .list-item {
+
+        .item-card {
             background: white;
             border-radius: 24px;
             padding: 18px;
-            margin-bottom: 10px;
-            border: 1px solid #f0f3f7;
-            box-shadow: 0 4px 12px -8px #0f172a15;
-            transition: 0.1s;
+            margin-bottom: 12px;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: 0.2s;
         }
+
         .item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-        .item-header h4 {
+
+        .item-header h3 {
             font-size: 1.2rem;
-            font-weight: 700;
-            color: #0f172a;
+            font-weight: 600;
+            color: #1a2b4c;
         }
-        .item-info p {
-            margin: 5px 0;
-            color: #475569;
+
+        .item-details {
+            color: #4a5a6e;
+            margin-bottom: 12px;
+        }
+
+        .item-details p {
+            margin: 4px 0;
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-        .item-actions {
-            display: flex;
             gap: 8px;
         }
-        button {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.15s;
-            color: #1e293b;
-            box-shadow: 0 2px 6px -4px #00000010;
+
+        .badge {
+            background: #e6edf5;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #1a2b4c;
         }
-        button.primary {
-            background: #0f172a;
-            border-color: #0f172a;
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 1px solid #dce3ec;
+            color: #2d3a4f;
+        }
+
+        .btn-primary {
+            background: #1a2b4c;
+            border-color: #1a2b4c;
             color: white;
         }
-        button.small {
-            padding: 6px 12px;
-            font-size: 0.8rem;
+
+        .btn-primary:hover {
+            background: #2c3e6e;
         }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+        }
+
         .add-button {
             width: 100%;
             padding: 16px;
-            background: #0f172a;
+            background: #1a2b4c;
             color: white;
             border: none;
             border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin-top: 8px;
-            box-shadow: 0 12px 20px -14px #0f172a;
-            transition: 0.15s;
-        }
-        .add-button:hover {
-            background: #1e293b;
-            transform: scale(0.98);
-        }
-        .empty-state {
-            text-align: center;
-            color: #94a3b8;
-            padding: 36px 20px;
-            background: #f8fafc;
-            border-radius: 32px;
+            font-weight: 600;
             font-size: 1rem;
-            border: 1px dashed #cbd5e1;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.2s;
         }
+
+        .add-button:hover {
+            background: #2c3e6e;
+            transform: scale(1.01);
+        }
+
+        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            z-index: 1000;
             padding: 16px;
         }
+
         .modal.active {
             display: flex;
         }
+
         .modal-content {
             background: white;
-            border-radius: 44px;
-            max-width: 480px;
+            border-radius: 40px;
+            max-width: 500px;
             width: 100%;
-            padding: 28px;
-            box-shadow: 0 30px 60px -20px #0f172a50;
+            padding: 32px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            max-height: 80vh;
+            overflow-y: auto;
         }
-        .modal-content h3 {
+
+        .modal-content h2 {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 20px;
+            color: #1a2b4c;
+            margin-bottom: 24px;
         }
+
         .modal-content input,
-        .modal-content select {
+        .modal-content select,
+        .modal-content textarea {
             width: 100%;
             padding: 16px 18px;
             border: 1px solid #e2e8f0;
-            border-radius: 44px;
+            border-radius: 30px;
             font-size: 1rem;
             margin-bottom: 16px;
-            background: #f8fafc;
+            background: #fafbfc;
         }
+
         .modal-actions {
             display: flex;
             gap: 12px;
             margin-top: 24px;
         }
+
         .modal-actions button {
             flex: 1;
             padding: 16px;
+            border-radius: 40px;
             font-weight: 600;
         }
-        .hint {
-            background: #eef2ff;
-            border-radius: 24px;
-            padding: 16px;
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            color: #1e293b;
-            border-left: 4px solid #4f46e5;
-        }
-        .tour-modal .modal-content {
-            background: #0f172a;
-            color: white;
-        }
-        .tour-modal h3 { color: white; }
-        .tour-modal p { color: #cbd5e1; margin-bottom: 24px; line-height: 1.5; }
-        .tour-buttons { display: flex; gap: 12px; }
-        .tour-buttons button {
-            flex: 1;
-            background: #334155;
-            border: none;
-            color: white;
-        }
-        .tour-buttons button.primary {
-            background: #4f46e5;
-        }
-        .footer-note {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            color: #94a3b8;
+
+        /* Пустое состояние */
+        .empty-state {
             text-align: center;
+            padding: 40px 20px;
+            background: #f8faff;
+            border-radius: 32px;
+            color: #8a99aa;
+        }
+
+        /* Интеграции */
+        .integrations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .integration-card {
+            background: #f8faff;
+            border-radius: 24px;
+            padding: 20px 8px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #eef2f6;
+        }
+
+        /* Подвал */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #8a99aa;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 <div class="app">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-        <h1>Моя CRM</h1>
-        <button class="help-btn" id="helpButton">?</button>
-    </div>
-    <div class="subtitle">
-        <span>для небольших продаж</span>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="logo">
+            <h1>✨ Simple CRM</h1>
+        </div>
+        <div class="pricing-badge">
+            <span class="plan-tag free">Бесплатно</span>
+            <span class="plan-tag pro">PRO 990 ₽/мес</span>
+            <span class="counter" id="contact-counter">0 / 10 контактов</span>
+        </div>
     </div>
 
-    <!-- Тарифы -->
-    <div class="pricing-card">
-        <div class="plan-badge">
-            <span class="badge free">Бесплатно</span>
-            <span class="badge pro">PRO 990 ₽/мес</span>
-        </div>
-        <div class="counter" id="clients-count">0 / 10</div>
-    </div>
-    <div id="limit-warning" style="background:#fff1e0; border-radius:40px; padding:12px; margin-bottom:20px; color:#a15400; display:none;">
-        ⚠️ Лимит клиентов 10. Удалите лишних или перейдите на PRO.
+    <!-- Предупреждение о лимите -->
+    <div id="limit-warning" class="hint" style="display: none; background: #fff4e5; border-left-color: #ff9800;">
+        ⚠️ Бесплатный лимит контактов (10) исчерпан. Удалите лишние или перейдите на PRO.
     </div>
 
     <!-- Вкладки -->
-    <div class="tabs">
-        <button class="tab active" data-tab="dashboard">🏠 Главная</button>
-        <button class="tab" data-tab="clients">👥 Клиенты</button>
-        <button class="tab" data-tab="sales">💰 Продажи</button>
-        <button class="tab" data-tab="reminders">⏰ Напоминания</button>
-    </div>
-
-    <!-- Главная -->
-    <div id="dashboard" class="section active">
-        <div class="quick-actions">
-            <button class="quick-btn" id="quick-client">➕ Клиент</button>
-            <button class="quick-btn" id="quick-sale">➕ Продажа</button>
-            <button class="quick-btn" id="quick-reminder">➕ Напоминание</button>
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab active" data-tab="dashboard">🏠 Главная</button>
+            <button class="tab" data-tab="contacts">👥 Контакты</button>
+            <button class="tab" data-tab="deals">💼 Сделки</button>
+            <button class="tab" data-tab="tasks">✅ Задачи</button>
+            <button class="tab" data-tab="comments">💬 Обсуждения</button>
+            <button class="tab" data-tab="integrations">🔌 Интеграции</button>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value" id="stat-clients">0</div>
-                <div class="stat-label">Клиенты</div>
+        <!-- ==================== ГЛАВНАЯ ==================== -->
+        <div id="dashboard" class="section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-contacts">0</div>
+                    <div class="stat-label">Контакты</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-deals">0</div>
+                    <div class="stat-label">Сделки</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-tasks">0</div>
+                    <div class="stat-label">Задачи</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-sum">0₽</div>
+                    <div class="stat-label">Сумма сделок</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="stat-sales">0</div>
-                <div class="stat-label">Продажи</div>
+
+            <div class="dashboard-card">
+                <div class="card-title">⏰ Напоминалки на сегодня</div>
+                <div id="today-reminders"></div>
+                <button class="btn btn-primary" id="check-reminders" style="width:100%; margin-top:12px;">🔔 Проверить напоминания</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="stat-reminders">0</div>
-                <div class="stat-label">Напоминания</div>
+
+            <div class="dashboard-card">
+                <div class="card-title">💬 Последние обсуждения</div>
+                <div id="recent-comments"></div>
+            </div>
+
+            <!-- Подсказка для новичков -->
+            <div class="hint" id="main-hint">
+                <span>👋</span>
+                <span><strong>Это ваш рабочий стол.</strong> Здесь всё, что нужно знать: задачи на сегодня и свежие комментарии.</span>
             </div>
         </div>
 
-        <h3 style="margin-bottom:12px;">🔔 Напоминания на сегодня</h3>
-        <div id="today-reminders" class="list-container" style="max-height:200px;"></div>
+        <!-- ==================== КОНТАКТЫ ==================== -->
+        <div id="contacts" class="section">
+            <div class="search-box">
+                <input type="text" id="search-contacts" placeholder="🔍 Поиск по имени, компании...">
+            </div>
+            <div id="contacts-list" class="list-container"></div>
+            <button class="add-button" id="show-add-contact">➕ Добавить контакт</button>
+            <div class="hint">
+                <span>👤</span>
+                <span><strong>Контакты</strong> — ваша база клиентов. Добавляйте имя, компанию, телефон и email.</span>
+            </div>
+        </div>
 
-        <div class="hint" id="dashboardHint">
-            <strong>Как работать:</strong> Нажмите кнопку «➕ Клиент» – добавьте покупателя. Потом создайте продажу и привяжите к ней напоминание. Всё просто!
+        <!-- ==================== СДЕЛКИ ==================== -->
+        <div id="deals" class="section">
+            <div class="search-box">
+                <input type="text" id="search-deals" placeholder="🔍 Поиск по сделкам...">
+            </div>
+            <div id="deals-list" class="list-container"></div>
+            <button class="add-button" id="show-add-deal">➕ Добавить сделку</button>
+            <div class="hint">
+                <span>💼</span>
+                <span><strong>Сделка</strong> — это продажа. Укажите название, сумму, этап и привяжите к контакту.</span>
+            </div>
+        </div>
+
+        <!-- ==================== ЗАДАЧИ ==================== -->
+        <div id="tasks" class="section">
+            <div class="search-box">
+                <input type="text" id="search-tasks" placeholder="🔍 Поиск по задачам...">
+            </div>
+            <div id="tasks-list" class="list-container"></div>
+            <button class="add-button" id="show-add-task">➕ Добавить задачу</button>
+            <div class="hint">
+                <span>✅</span>
+                <span><strong>Задачи</strong> — напоминания, что нужно сделать: позвонить, встретиться, отправить документы.</span>
+            </div>
+        </div>
+
+        <!-- ==================== ОБСУЖДЕНИЯ (КОММЕНТАРИИ) ==================== -->
+        <div id="comments" class="section">
+            <div class="search-box">
+                <input type="text" id="search-comments" placeholder="🔍 Поиск по комментариям...">
+            </div>
+            <div id="comments-list" class="list-container"></div>
+            <div style="background:#f0f7ff; border-radius:32px; padding:20px; margin:20px 0;">
+                <select id="comment-deal-select" style="width:100%; padding:16px; border-radius:40px; margin-bottom:16px;">
+                    <option value="">Выберите сделку</option>
+                </select>
+                <input type="text" id="comment-text" placeholder="Напишите комментарий..." style="width:100%; padding:16px; border-radius:40px; margin-bottom:16px;">
+                <button class="btn btn-primary" id="add-comment-btn" style="width:100%;">💬 Добавить комментарий</button>
+            </div>
+            <div class="hint">
+                <span>💬</span>
+                <span><strong>Обсуждения</strong> — внутренний чат по сделкам. Пишите комментарии к конкретной сделке, чтобы коллеги были в курсе.</span>
+            </div>
+        </div>
+
+        <!-- ==================== ИНТЕГРАЦИИ ==================== -->
+        <div id="integrations" class="section">
+            <div class="integrations-grid">
+                <div class="integration-card">📧 Email</div>
+                <div class="integration-card">📞 Телефония</div>
+                <div class="integration-card">📱 WhatsApp</div>
+                <div class="integration-card">✈️ Telegram</div>
+                <div class="integration-card">📊 Excel</div>
+                <div class="integration-card">🔌 API</div>
+            </div>
+            <div class="hint">
+                <span>🔌</span>
+                <span><strong>Интеграции</strong> — скоро вы сможете подключать почту, мессенджеры и телефонию.</span>
+            </div>
         </div>
     </div>
 
-    <!-- Клиенты -->
-    <div id="clients" class="section">
-        <div class="hint">Здесь хранятся ваши клиенты. Нажмите «➕ Добавить».</div>
-        <div id="clients-list" class="list-container"></div>
-        <button class="add-button" id="show-add-client">➕ Добавить клиента</button>
+    <div class="footer">
+        ✨ Нажмите на любой раздел, чтобы начать работу. Данные сохраняются в браузере.
     </div>
-
-    <!-- Продажи -->
-    <div id="sales" class="section">
-        <div class="hint"><strong>Продажа</strong> — то, что продаёте. Укажите название, сумму и этап.</div>
-        <div id="sales-list" class="list-container"></div>
-        <button class="add-button" id="show-add-sale">➕ Добавить продажу</button>
-    </div>
-
-    <!-- Напоминания -->
-    <div id="reminders" class="section">
-        <div class="hint">Запланируйте звонок или встречу — они появятся на главной.</div>
-        <div id="reminders-list" class="list-container"></div>
-        <button class="add-button" id="show-add-reminder">➕ Добавить напоминание</button>
-    </div>
-
-    <div class="footer-note">✏️ Все данные хранятся локально</div>
 </div>
 
-<!-- Модальное окно для создания/редактирования -->
+<!-- Модальное окно -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h3 id="modal-title">Заголовок</h3>
+        <h2 id="modal-title">Добавить</h2>
         <div id="modal-fields"></div>
         <div class="modal-actions">
-            <button id="modal-cancel">Отмена</button>
-            <button class="primary" id="modal-save">Сохранить</button>
+            <button class="btn" id="modal-cancel">Отмена</button>
+            <button class="btn btn-primary" id="modal-save">Сохранить</button>
         </div>
     </div>
 </div>
 
-<!-- Модальное окно обучения (тур) -->
-<div id="tourModal" class="modal tour-modal">
-    <div class="modal-content">
-        <h3 id="tourTitle">👋 Добро пожаловать!</h3>
-        <p id="tourText">Это простая CRM для учёта клиентов и продаж. Сейчас я покажу основные шаги.</p>
-        <div class="tour-buttons">
-            <button id="tourPrev" style="display:none;">← Назад</button>
-            <button id="tourNext" class="primary">Далее</button>
-            <button id="tourClose">Закрыть</button>
+<!-- Обучение (тур) -->
+<div id="tour-overlay" class="tour-overlay">
+    <div class="tour-card">
+        <div class="tour-icon">👋</div>
+        <div class="tour-title">Добро пожаловать!</div>
+        <div class="tour-desc">Это простая CRM, где есть всё для продаж. Давайте быстро пройдёмся по разделам:</div>
+        <div class="tour-feature">
+            <p><b>🏠 Главная</b> — статистика и напоминалки</p>
+            <p><b>👥 Контакты</b> — база клиентов</p>
+            <p><b>💼 Сделки</b> — ваши продажи</p>
+            <p><b>✅ Задачи</b> — что нужно сделать</p>
+            <p><b>💬 Обсуждения</b> — чат по сделкам</p>
+            <p><b>🔌 Интеграции</b> — скоро</p>
         </div>
+        <button class="tour-button" id="close-tour">🚀 Начать работу</button>
     </div>
 </div>
 
 <script>
     (function() {
-        // --- Хранилище и ключи ---
+        // ========== Хранилище ==========
         const STORAGE_KEYS = {
-            CLIENTS: 'crm_clients_beauty',
-            SALES: 'crm_sales_beauty',
-            REMINDERS: 'crm_reminders_beauty',
-            TOUR_DONE: 'crm_tour_done'
+            CONTACTS: 'crm_final_contacts',
+            DEALS: 'crm_final_deals',
+            TASKS: 'crm_final_tasks',
+            COMMENTS: 'crm_final_comments',
+            TOUR_DONE: 'crm_final_tour_done'
         };
 
         class Storage {
-            static get(key) {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : [];
-            }
-            static set(key, value) {
-                localStorage.setItem(key, JSON.stringify(value));
-            }
+            static get(key) { return JSON.parse(localStorage.getItem(key)) || []; }
+            static set(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
         }
 
-        // --- Инициализация демо-данных, если пусто ---
-        if (Storage.get(STORAGE_KEYS.CLIENTS).length === 0) {
-            Storage.set(STORAGE_KEYS.CLIENTS, [
-                { id: 1, name: 'Иван Петров', company: 'ООО Ромашка', phone: '+7 999 123-45-67' },
-                { id: 2, name: 'Ольга Смирнова', company: 'ИП Смирнова', phone: '+7 999 765-43-21' }
+        // ========== Инициализация данных ==========
+        if (Storage.get(STORAGE_KEYS.CONTACTS).length === 0) {
+            Storage.set(STORAGE_KEYS.CONTACTS, [
+                { id: 1001, name: 'Иван Петров', company: 'ООО "Ромашка"', phone: '+7 999 123-45-67', email: 'ivan@example.com' },
+                { id: 1002, name: 'Ольга Смирнова', company: 'ИП Смирнова', phone: '+7 999 765-43-21', email: 'olga@example.com' }
             ]);
         }
-        if (Storage.get(STORAGE_KEYS.SALES).length === 0) {
-            Storage.set(STORAGE_KEYS.SALES, [
-                { id: 3, title: 'Сайт для магазина', value: 150000, stage: 'Переговоры', clientId: 1 },
-                { id: 4, title: 'Поставка оборудования', value: 320000, stage: 'Оценка', clientId: 2 }
+        if (Storage.get(STORAGE_KEYS.DEALS).length === 0) {
+            Storage.set(STORAGE_KEYS.DEALS, [
+                { id: 2001, title: 'Сайт для магазина', value: 150000, stage: 'Переговоры', contactId: 1001 },
+                { id: 2002, title: 'Поставка оборудования', value: 320000, stage: 'Оценка', contactId: 1002 }
             ]);
         }
-        if (Storage.get(STORAGE_KEYS.REMINDERS).length === 0) {
-            const today = new Date().toISOString().split('T')[0];
-            Storage.set(STORAGE_KEYS.REMINDERS, [
-                { id: 5, title: 'Позвонить Ивану', dueDate: today, completed: false, saleId: 3 },
-                { id: 6, title: 'Отправить КП', dueDate: today, completed: false, saleId: 4 }
+        const today = new Date().toISOString().split('T')[0];
+        const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+        if (Storage.get(STORAGE_KEYS.TASKS).length === 0) {
+            Storage.set(STORAGE_KEYS.TASKS, [
+                { id: 3001, title: 'Позвонить Ивану', dueDate: today, completed: false, dealId: 2001 },
+                { id: 3002, title: 'Отправить КП', dueDate: tomorrow, completed: false, dealId: 2002 }
+            ]);
+        }
+        if (Storage.get(STORAGE_KEYS.COMMENTS).length === 0) {
+            Storage.set(STORAGE_KEYS.COMMENTS, [
+                { id: 4001, dealId: 2001, text: 'Клиент просит скидку 10%', author: 'Менеджер', time: new Date().toISOString() },
+                { id: 4002, dealId: 2002, text: 'Ждём решение до пятницы', author: 'Менеджер', time: new Date().toISOString() }
             ]);
         }
 
+        // ========== Состояние ==========
+        let searchTerms = { contacts: '', deals: '', tasks: '', comments: '' };
         let editingId = null;
-        let currentTab = 'dashboard';
+        let currentUser = 'Менеджер';
 
-        // --- Вспомогательные функции ---
-        function generateId() {
-            return Date.now() + Math.floor(Math.random() * 1000);
-        }
+        // ========== Вспомогательные ==========
+        function generateId() { return Date.now() + Math.floor(Math.random() * 10000); }
+        function escape(s) { return s ? String(s).replace(/[&<>"]/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]; }) : ''; }
+        function formatDate(d) { return d ? new Date(d).toLocaleDateString('ru-RU') : ''; }
+        function isToday(d) { return d === new Date().toISOString().split('T')[0]; }
 
-        function escapeHtml(unsafe) {
-            if (!unsafe) return '';
-            return unsafe.replace(/[&<>"']/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                if (m === '"') return '&quot;';
-                return '&#039;';
-            });
-        }
-
-        function formatDate(dateStr) {
-            if (!dateStr) return '';
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('ru-RU');
-        }
-
-        function isToday(dateStr) {
-            return dateStr === new Date().toISOString().split('T')[0];
-        }
-
+        // ========== Обновление интерфейса ==========
         function updateCounters() {
-            const clients = Storage.get(STORAGE_KEYS.CLIENTS);
-            document.getElementById('clients-count').innerText = `${clients.length} / 10`;
-            document.getElementById('limit-warning').style.display = clients.length >= 10 ? 'block' : 'none';
-            document.getElementById('stat-clients').innerText = clients.length;
-            document.getElementById('stat-sales').innerText = Storage.get(STORAGE_KEYS.SALES).length;
-            document.getElementById('stat-reminders').innerText = Storage.get(STORAGE_KEYS.REMINDERS).length;
+            const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+            document.getElementById('contact-counter').innerText = `${contacts.length} / 10 контактов`;
+            document.getElementById('limit-warning').style.display = contacts.length >= 10 ? 'flex' : 'none';
         }
 
-        // --- Рендеринг всех разделов ---
         function renderDashboard() {
-            const reminders = Storage.get(STORAGE_KEYS.REMINDERS);
-            const today = reminders.filter(r => !r.completed && isToday(r.dueDate));
-            const container = document.getElementById('today-reminders');
-            if (today.length === 0) {
-                container.innerHTML = '<div class="empty-state">✅ На сегодня напоминаний нет</div>';
-            } else {
-                container.innerHTML = today.map(r => `
-                    <div class="reminder-item">
-                        <div>
-                            <div class="reminder-title">${escapeHtml(r.title)}</div>
-                            <div class="reminder-date">${formatDate(r.dueDate)}</div>
-                        </div>
-                        <button class="small toggle-reminder" data-id="${r.id}">✅ Выполнить</button>
-                    </div>
-                `).join('');
+            const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+            const deals = Storage.get(STORAGE_KEYS.DEALS);
+            const tasks = Storage.get(STORAGE_KEYS.TASKS);
+            const comments = Storage.get(STORAGE_KEYS.COMMENTS);
+
+            document.getElementById('stat-contacts').innerText = contacts.length;
+            document.getElementById('stat-deals').innerText = deals.length;
+            document.getElementById('stat-tasks').innerText = tasks.length;
+            const sum = deals.reduce((s,d) => s + (d.value||0), 0);
+            document.getElementById('stat-sum').innerText = sum.toLocaleString() + '₽';
+
+            const todayTasks = tasks.filter(t => !t.completed && isToday(t.dueDate));
+            const remEl = document.getElementById('today-reminders');
+            if (todayTasks.length === 0) remEl.innerHTML = '<div class="empty-state">✅ На сегодня задач нет</div>';
+            else {
+                remEl.innerHTML = todayTasks.map(t => `
+                    <div class="reminder-item ${isToday(t.dueDate) ? 'urgent' : ''}">
+                        <div><h4>${escape(t.title)}</h4><div class="reminder-date">${formatDate(t.dueDate)}</div></div>
+                        <button class="btn btn-small toggle-task" data-id="${t.id}">✅ Выполнить</button>
+                    </div>`).join('');
+            }
+
+            const recent = comments.slice(-3).reverse();
+            const commEl = document.getElementById('recent-comments');
+            if (recent.length === 0) commEl.innerHTML = '<div class="empty-state">💬 Нет комментариев</div>';
+            else {
+                commEl.innerHTML = recent.map(c => {
+                    const deal = deals.find(d => d.id === c.dealId);
+                    return `<div class="item-card"><b>${escape(c.author)}</b>: ${escape(c.text)}<br><small>по сделке «${deal ? escape(deal.title) : '—'}» • ${new Date(c.time).toLocaleString()}</small></div>`;
+                }).join('');
             }
         }
 
-        function renderClients() {
-            const clients = Storage.get(STORAGE_KEYS.CLIENTS);
-            const container = document.getElementById('clients-list');
-            if (clients.length === 0) {
-                container.innerHTML = '<div class="empty-state">🤷 Нет клиентов</div>';
-                return;
-            }
-            container.innerHTML = clients.map(c => `
-                <div class="list-item" data-id="${c.id}">
-                    <div class="item-header">
-                        <h4>${escapeHtml(c.name)}</h4>
-                        <div class="item-actions">
-                            <button class="small edit-client" data-id="${c.id}">✎</button>
-                            <button class="small delete-client" data-id="${c.id}">✕</button>
-                        </div>
-                    </div>
-                    <div class="item-info">
-                        <p>🏢 ${escapeHtml(c.company || '—')}</p>
-                        <p>📞 ${escapeHtml(c.phone || '—')}</p>
-                    </div>
-                </div>
-            `).join('');
+        function renderContacts() {
+            let items = Storage.get(STORAGE_KEYS.CONTACTS);
+            const term = searchTerms.contacts.toLowerCase();
+            if (term) items = items.filter(c => c.name?.toLowerCase().includes(term) || c.company?.toLowerCase().includes(term));
+            const html = items.length ? items.map(c => `
+                <div class="item-card">
+                    <div class="item-header"><h3>${escape(c.name)}</h3><div><button class="btn btn-small edit-contact" data-id="${c.id}">✎</button> <button class="btn btn-small delete-contact" data-id="${c.id}">✕</button></div></div>
+                    <div class="item-details">🏢 ${escape(c.company||'—')}<br>📞 ${escape(c.phone||'—')}<br>✉️ ${escape(c.email||'—')}</div>
+                </div>`).join('') : '<div class="empty-state">🤷 Нет контактов</div>';
+            document.getElementById('contacts-list').innerHTML = html;
         }
 
-        function renderSales() {
-            const sales = Storage.get(STORAGE_KEYS.SALES);
-            const clients = Storage.get(STORAGE_KEYS.CLIENTS);
-            const container = document.getElementById('sales-list');
-            if (sales.length === 0) {
-                container.innerHTML = '<div class="empty-state">💼 Нет продаж</div>';
-                return;
-            }
-            container.innerHTML = sales.map(s => {
-                const client = clients.find(c => c.id === s.clientId);
-                return `
-                <div class="list-item" data-id="${s.id}">
-                    <div class="item-header">
-                        <h4>${escapeHtml(s.title)}</h4>
-                        <div class="item-actions">
-                            <button class="small edit-sale" data-id="${s.id}">✎</button>
-                            <button class="small delete-sale" data-id="${s.id}">✕</button>
-                        </div>
-                    </div>
-                    <div class="item-info">
-                        <p>💰 ${s.value?.toLocaleString() || 0} ₽</p>
-                        <p>📌 Этап: ${escapeHtml(s.stage)}</p>
-                        <p>👤 Клиент: ${client ? escapeHtml(client.name) : '—'}</p>
-                    </div>
-                </div>
-            `}).join('');
+        function renderDeals() {
+            let items = Storage.get(STORAGE_KEYS.DEALS);
+            const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+            const term = searchTerms.deals.toLowerCase();
+            if (term) items = items.filter(d => d.title?.toLowerCase().includes(term));
+            const html = items.length ? items.map(d => {
+                const contact = contacts.find(c => c.id === d.contactId);
+                return `<div class="item-card">
+                    <div class="item-header"><h3>${escape(d.title)}</h3><div><button class="btn btn-small edit-deal" data-id="${d.id}">✎</button> <button class="btn btn-small delete-deal" data-id="${d.id}">✕</button></div></div>
+                    <div class="item-details">💰 ${(d.value||0).toLocaleString()} ₽<br>📌 Этап: ${escape(d.stage)}<br>👤 Контакт: ${contact ? escape(contact.name) : '—'}</div>
+                </div>`}).join('') : '<div class="empty-state">💼 Нет сделок</div>';
+            document.getElementById('deals-list').innerHTML = html;
         }
 
-        function renderReminders() {
-            const reminders = Storage.get(STORAGE_KEYS.REMINDERS);
-            const sales = Storage.get(STORAGE_KEYS.SALES);
-            const container = document.getElementById('reminders-list');
-            if (reminders.length === 0) {
-                container.innerHTML = '<div class="empty-state">✅ Нет напоминаний</div>';
-                return;
-            }
-            container.innerHTML = reminders.map(r => {
-                const sale = sales.find(s => s.id === r.saleId);
-                return `
-                <div class="list-item" data-id="${r.id}">
-                    <div class="item-header">
-                        <h4 style="${r.completed ? 'text-decoration: line-through; opacity:0.6;' : ''}">${escapeHtml(r.title)}</h4>
-                        <div class="item-actions">
-                            <button class="small toggle-reminder" data-id="${r.id}">${r.completed ? '↩️' : '✅'}</button>
-                            <button class="small edit-reminder" data-id="${r.id}">✎</button>
-                            <button class="small delete-reminder" data-id="${r.id}">✕</button>
-                        </div>
+        function renderTasks() {
+            let items = Storage.get(STORAGE_KEYS.TASKS);
+            const deals = Storage.get(STORAGE_KEYS.DEALS);
+            const term = searchTerms.tasks.toLowerCase();
+            if (term) items = items.filter(t => t.title?.toLowerCase().includes(term));
+            const html = items.length ? items.map(t => {
+                const deal = deals.find(d => d.id === t.dealId);
+                return `<div class="item-card" style="opacity:${t.completed?0.7:1}">
+                    <div class="item-header"><h3 style="text-decoration:${t.completed?'line-through':'none'}">${escape(t.title)}</h3>
+                        <div><button class="btn btn-small toggle-task" data-id="${t.id}">${t.completed?'↩️':'✅'}</button>
+                        <button class="btn btn-small edit-task" data-id="${t.id}">✎</button>
+                        <button class="btn btn-small delete-task" data-id="${t.id}">✕</button></div>
                     </div>
-                    <div class="item-info">
-                        <p>📅 ${formatDate(r.dueDate)} ${isToday(r.dueDate) ? '🔔 Сегодня' : ''}</p>
-                        <p>📌 Продажа: ${sale ? escapeHtml(sale.title) : '—'}</p>
-                    </div>
-                </div>
-            `}).join('');
+                    <div class="item-details">📅 ${formatDate(t.dueDate)} ${isToday(t.dueDate)?'🔔 Сегодня':''}<br>📌 Сделка: ${deal ? escape(deal.title) : '—'}</div>
+                </div>`}).join('') : '<div class="empty-state">✅ Нет задач</div>';
+            document.getElementById('tasks-list').innerHTML = html;
         }
 
-        function renderAll() {
-            renderDashboard();
-            renderClients();
-            renderSales();
-            renderReminders();
-            updateCounters();
+        function renderComments() {
+            let items = Storage.get(STORAGE_KEYS.COMMENTS);
+            const deals = Storage.get(STORAGE_KEYS.DEALS);
+            const term = searchTerms.comments.toLowerCase();
+            if (term) items = items.filter(c => c.text?.toLowerCase().includes(term));
+            items.sort((a,b) => new Date(b.time) - new Date(a.time));
+            const html = items.length ? items.map(c => {
+                const deal = deals.find(d => d.id === c.dealId);
+                return `<div class="item-card"><b>${escape(c.author)}</b>: ${escape(c.text)}<br><small>по сделке «${deal ? escape(deal.title) : '—'}» • ${new Date(c.time).toLocaleString()}</small></div>`;
+            }).join('') : '<div class="empty-state">💬 Нет комментариев</div>';
+            document.getElementById('comments-list').innerHTML = html;
+
+            const select = document.getElementById('comment-deal-select');
+            if (select) select.innerHTML = '<option value="">Выберите сделку</option>' + deals.map(d => `<option value="${d.id}">${escape(d.title)}</option>`).join('');
         }
 
-        // --- Модальное окно для создания/редактирования ---
+        function renderAll() { renderDashboard(); renderContacts(); renderDeals(); renderTasks(); renderComments(); updateCounters(); }
+
+        // ========== Модальное окно ==========
         const modal = document.getElementById('modal');
         const modalTitle = document.getElementById('modal-title');
         const modalFields = document.getElementById('modal-fields');
@@ -687,276 +869,164 @@
 
         function openModal(type, editData = null) {
             editingId = editData ? editData.id : null;
-            let fieldsHtml = '';
-            const clients = Storage.get(STORAGE_KEYS.CLIENTS);
-            const sales = Storage.get(STORAGE_KEYS.SALES);
-
-            if (type === 'client') {
-                modalTitle.innerText = editData ? 'Редактировать клиента' : 'Новый клиент';
-                fieldsHtml = `
-                    <input type="text" id="modal-client-name" placeholder="Имя *" value="${escapeHtml(editData?.name || '')}">
-                    <input type="text" id="modal-client-company" placeholder="Компания" value="${escapeHtml(editData?.company || '')}">
-                    <input type="tel" id="modal-client-phone" placeholder="Телефон" value="${escapeHtml(editData?.phone || '')}">
+            const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+            const deals = Storage.get(STORAGE_KEYS.DEALS);
+            let html = '';
+            if (type === 'contact') {
+                modalTitle.innerText = editData ? 'Редактировать контакт' : 'Новый контакт';
+                html = `
+                    <input type="text" id="modal-name" placeholder="Имя *" value="${escape(editData?.name||'')}">
+                    <input type="text" id="modal-company" placeholder="Компания" value="${escape(editData?.company||'')}">
+                    <input type="tel" id="modal-phone" placeholder="Телефон" value="${escape(editData?.phone||'')}">
+                    <input type="email" id="modal-email" placeholder="Email" value="${escape(editData?.email||'')}">
                 `;
-            } else if (type === 'sale') {
-                modalTitle.innerText = editData ? 'Редактировать продажу' : 'Новая продажа';
-                const stageOptions = ['Переговоры', 'Успех', 'Провал'].map(s => 
-                    `<option value="${s}" ${editData?.stage === s ? 'selected' : ''}>${s}</option>`
-                ).join('');
-                const clientOptions = clients.map(c => 
-                    `<option value="${c.id}" ${editData?.clientId === c.id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`
-                ).join('');
-                fieldsHtml = `
-                    <input type="text" id="modal-sale-title" placeholder="Название *" value="${escapeHtml(editData?.title || '')}">
-                    <input type="number" id="modal-sale-value" placeholder="Сумма" value="${editData?.value || ''}">
-                    <select id="modal-sale-stage">${stageOptions}</select>
-                    <select id="modal-sale-client">${clientOptions}</select>
+            } else if (type === 'deal') {
+                modalTitle.innerText = editData ? 'Редактировать сделку' : 'Новая сделка';
+                const stages = ['Переговоры','Оценка','Успех','Провал'];
+                const stageOpts = stages.map(s => `<option value="${s}" ${editData?.stage===s?'selected':''}>${s}</option>`).join('');
+                const contactOpts = contacts.map(c => `<option value="${c.id}" ${editData?.contactId===c.id?'selected':''}>${escape(c.name)}</option>`).join('');
+                html = `
+                    <input type="text" id="modal-title" placeholder="Название *" value="${escape(editData?.title||'')}">
+                    <input type="number" id="modal-value" placeholder="Сумма" value="${editData?.value||''}">
+                    <select id="modal-stage">${stageOpts}</select>
+                    <select id="modal-contact">${contactOpts}</select>
                 `;
-            } else if (type === 'reminder') {
-                modalTitle.innerText = editData ? 'Редактировать напоминание' : 'Новое напоминание';
-                const saleOptions = sales.map(s => 
-                    `<option value="${s.id}" ${editData?.saleId === s.id ? 'selected' : ''}>${escapeHtml(s.title)}</option>`
-                ).join('');
-                fieldsHtml = `
-                    <input type="text" id="modal-reminder-title" placeholder="Что сделать? *" value="${escapeHtml(editData?.title || '')}">
-                    <input type="date" id="modal-reminder-due" value="${editData?.dueDate || ''}">
-                    <select id="modal-reminder-sale">${saleOptions}</select>
+            } else if (type === 'task') {
+                modalTitle.innerText = editData ? 'Редактировать задачу' : 'Новая задача';
+                const dealOpts = deals.map(d => `<option value="${d.id}" ${editData?.dealId===d.id?'selected':''}>${escape(d.title)}</option>`).join('');
+                html = `
+                    <input type="text" id="modal-title" placeholder="Задача *" value="${escape(editData?.title||'')}">
+                    <input type="date" id="modal-due" value="${editData?.dueDate||''}">
+                    <select id="modal-deal">${dealOpts}</select>
                 `;
             }
-            modalFields.innerHTML = fieldsHtml;
+            modalFields.innerHTML = html;
             modal.classList.add('active');
             modalSave.dataset.type = type;
         }
 
-        function closeModal() {
-            modal.classList.remove('active');
-            editingId = null;
-        }
-
-        modalCancel.addEventListener('click', closeModal);
-
-        modalSave.addEventListener('click', () => {
+        modalCancel.onclick = () => modal.classList.remove('active');
+        modalSave.onclick = () => {
             const type = modalSave.dataset.type;
-
-            if (type === 'client') {
-                const name = document.getElementById('modal-client-name')?.value.trim();
-                if (!name) { alert('Введите имя'); return; }
-                const clients = Storage.get(STORAGE_KEYS.CLIENTS);
-                if (!editingId && clients.length >= 10) {
-                    alert('Лимит клиентов 10. Удалите лишних.');
-                    closeModal();
-                    return;
-                }
-                const newClient = {
-                    id: editingId || generateId(),
-                    name,
-                    company: document.getElementById('modal-client-company')?.value.trim() || '',
-                    phone: document.getElementById('modal-client-phone')?.value.trim() || ''
-                };
+            if (type === 'contact') {
+                const name = document.getElementById('modal-name')?.value.trim();
+                if (!name) return alert('Введите имя');
+                const contacts = Storage.get(STORAGE_KEYS.CONTACTS);
+                if (!editingId && contacts.length >= 10) { alert('Лимит контактов 10'); return; }
+                const newItem = { id: editingId || generateId(), name, company: document.getElementById('modal-company')?.value||'', phone: document.getElementById('modal-phone')?.value||'', email: document.getElementById('modal-email')?.value||'' };
                 if (editingId) {
-                    const index = clients.findIndex(c => c.id === editingId);
-                    if (index !== -1) clients[index] = newClient;
-                } else {
-                    clients.push(newClient);
-                }
-                Storage.set(STORAGE_KEYS.CLIENTS, clients);
-                renderClients();
-                renderAll();
-            } else if (type === 'sale') {
-                const title = document.getElementById('modal-sale-title')?.value.trim();
-                if (!title) { alert('Введите название'); return; }
-                const sales = Storage.get(STORAGE_KEYS.SALES);
-                const newSale = {
-                    id: editingId || generateId(),
-                    title,
-                    value: parseFloat(document.getElementById('modal-sale-value')?.value) || 0,
-                    stage: document.getElementById('modal-sale-stage')?.value || 'Переговоры',
-                    clientId: parseInt(document.getElementById('modal-sale-client')?.value) || null
-                };
+                    const idx = contacts.findIndex(c => c.id === editingId);
+                    if (idx>=0) contacts[idx] = newItem;
+                } else contacts.push(newItem);
+                Storage.set(STORAGE_KEYS.CONTACTS, contacts);
+                renderContacts(); renderDashboard(); updateCounters();
+            } else if (type === 'deal') {
+                const title = document.getElementById('modal-title')?.value.trim();
+                if (!title) return alert('Введите название');
+                const deals = Storage.get(STORAGE_KEYS.DEALS);
+                const newItem = { id: editingId || generateId(), title, value: parseFloat(document.getElementById('modal-value')?.value)||0, stage: document.getElementById('modal-stage')?.value, contactId: parseInt(document.getElementById('modal-contact')?.value)||null };
                 if (editingId) {
-                    const index = sales.findIndex(s => s.id === editingId);
-                    if (index !== -1) sales[index] = newSale;
-                } else {
-                    sales.push(newSale);
-                }
-                Storage.set(STORAGE_KEYS.SALES, sales);
-                renderSales();
-                renderAll();
-            } else if (type === 'reminder') {
-                const title = document.getElementById('modal-reminder-title')?.value.trim();
-                if (!title) { alert('Введите задачу'); return; }
-                const reminders = Storage.get(STORAGE_KEYS.REMINDERS);
-                const newReminder = {
-                    id: editingId || generateId(),
-                    title,
-                    dueDate: document.getElementById('modal-reminder-due')?.value || '',
-                    completed: false,
-                    saleId: parseInt(document.getElementById('modal-reminder-sale')?.value) || null
-                };
+                    const idx = deals.findIndex(d => d.id === editingId);
+                    if (idx>=0) deals[idx] = newItem;
+                } else deals.push(newItem);
+                Storage.set(STORAGE_KEYS.DEALS, deals);
+                renderDeals(); renderDashboard();
+            } else if (type === 'task') {
+                const title = document.getElementById('modal-title')?.value.trim();
+                if (!title) return alert('Введите задачу');
+                const tasks = Storage.get(STORAGE_KEYS.TASKS);
+                const newItem = { id: editingId || generateId(), title, dueDate: document.getElementById('modal-due')?.value, completed: false, dealId: parseInt(document.getElementById('modal-deal')?.value)||null };
                 if (editingId) {
-                    const index = reminders.findIndex(r => r.id === editingId);
-                    if (index !== -1) {
-                        newReminder.completed = reminders[index].completed;
-                        reminders[index] = newReminder;
-                    }
-                } else {
-                    reminders.push(newReminder);
-                }
-                Storage.set(STORAGE_KEYS.REMINDERS, reminders);
-                renderReminders();
-                renderAll();
+                    const idx = tasks.findIndex(t => t.id === editingId);
+                    if (idx>=0) { newItem.completed = tasks[idx].completed; tasks[idx] = newItem; }
+                } else tasks.push(newItem);
+                Storage.set(STORAGE_KEYS.TASKS, tasks);
+                renderTasks(); renderDashboard();
             }
-            closeModal();
-        });
+            modal.classList.remove('active');
+        };
 
-        // --- Обработчики кнопок "Добавить" и быстрых действий ---
-        document.getElementById('quick-client').addEventListener('click', () => openModal('client'));
-        document.getElementById('quick-sale').addEventListener('click', () => openModal('sale'));
-        document.getElementById('quick-reminder').addEventListener('click', () => openModal('reminder'));
-        document.getElementById('show-add-client').addEventListener('click', () => openModal('client'));
-        document.getElementById('show-add-sale').addEventListener('click', () => openModal('sale'));
-        document.getElementById('show-add-reminder').addEventListener('click', () => openModal('reminder'));
+        // ========== Обработчики ==========
+        document.getElementById('show-add-contact').onclick = () => openModal('contact');
+        document.getElementById('show-add-deal').onclick = () => openModal('deal');
+        document.getElementById('show-add-task').onclick = () => openModal('task');
 
-        // --- Удаление, редактирование и переключение задач ---
-        document.addEventListener('click', (e) => {
+        document.getElementById('add-comment-btn').onclick = () => {
+            const dealId = parseInt(document.getElementById('comment-deal-select')?.value);
+            const text = document.getElementById('comment-text')?.value.trim();
+            if (!dealId || !text) return alert('Выберите сделку и напишите комментарий');
+            const comments = Storage.get(STORAGE_KEYS.COMMENTS);
+            comments.push({ id: generateId(), dealId, text, author: currentUser, time: new Date().toISOString() });
+            Storage.set(STORAGE_KEYS.COMMENTS, comments);
+            document.getElementById('comment-text').value = '';
+            renderComments(); renderDashboard();
+        };
+
+        document.getElementById('check-reminders').onclick = () => {
+            const tasks = Storage.get(STORAGE_KEYS.TASKS);
+            const todayTasks = tasks.filter(t => !t.completed && isToday(t.dueDate));
+            alert(todayTasks.length ? `🔔 У вас ${todayTasks.length} задач на сегодня` : '✅ На сегодня задач нет');
+        };
+
+        document.addEventListener('click', e => {
             const id = Number(e.target.dataset.id);
-            if (e.target.classList.contains('delete-client')) {
-                if (!confirm('Удалить клиента?')) return;
-                let items = Storage.get(STORAGE_KEYS.CLIENTS).filter(i => i.id !== id);
-                Storage.set(STORAGE_KEYS.CLIENTS, items);
-                renderAll();
-            }
-            if (e.target.classList.contains('delete-sale')) {
-                if (!confirm('Удалить продажу?')) return;
-                let items = Storage.get(STORAGE_KEYS.SALES).filter(i => i.id !== id);
-                Storage.set(STORAGE_KEYS.SALES, items);
-                renderAll();
-            }
-            if (e.target.classList.contains('delete-reminder')) {
-                if (!confirm('Удалить напоминание?')) return;
-                let items = Storage.get(STORAGE_KEYS.REMINDERS).filter(i => i.id !== id);
-                Storage.set(STORAGE_KEYS.REMINDERS, items);
-                renderAll();
-            }
-            if (e.target.classList.contains('edit-client')) {
-                const item = Storage.get(STORAGE_KEYS.CLIENTS).find(i => i.id === id);
-                if (item) openModal('client', item);
-            }
-            if (e.target.classList.contains('edit-sale')) {
-                const item = Storage.get(STORAGE_KEYS.SALES).find(i => i.id === id);
-                if (item) openModal('sale', item);
-            }
-            if (e.target.classList.contains('edit-reminder')) {
-                const item = Storage.get(STORAGE_KEYS.REMINDERS).find(i => i.id === id);
-                if (item) openModal('reminder', item);
-            }
-            if (e.target.classList.contains('toggle-reminder')) {
-                const reminders = Storage.get(STORAGE_KEYS.REMINDERS);
-                const r = reminders.find(r => r.id === id);
-                if (r) {
-                    r.completed = !r.completed;
-                    Storage.set(STORAGE_KEYS.REMINDERS, reminders);
-                    renderAll();
-                }
+            if (e.target.classList.contains('delete-contact')) {
+                if (!confirm('Удалить контакт?')) return;
+                Storage.set(STORAGE_KEYS.CONTACTS, Storage.get(STORAGE_KEYS.CONTACTS).filter(c => c.id !== id));
+                renderContacts(); renderDashboard(); updateCounters();
+            } else if (e.target.classList.contains('delete-deal')) {
+                if (!confirm('Удалить сделку?')) return;
+                Storage.set(STORAGE_KEYS.DEALS, Storage.get(STORAGE_KEYS.DEALS).filter(d => d.id !== id));
+                renderDeals(); renderDashboard();
+            } else if (e.target.classList.contains('delete-task')) {
+                if (!confirm('Удалить задачу?')) return;
+                Storage.set(STORAGE_KEYS.TASKS, Storage.get(STORAGE_KEYS.TASKS).filter(t => t.id !== id));
+                renderTasks(); renderDashboard();
+            } else if (e.target.classList.contains('edit-contact')) {
+                const item = Storage.get(STORAGE_KEYS.CONTACTS).find(c => c.id === id);
+                if (item) openModal('contact', item);
+            } else if (e.target.classList.contains('edit-deal')) {
+                const item = Storage.get(STORAGE_KEYS.DEALS).find(d => d.id === id);
+                if (item) openModal('deal', item);
+            } else if (e.target.classList.contains('edit-task')) {
+                const item = Storage.get(STORAGE_KEYS.TASKS).find(t => t.id === id);
+                if (item) openModal('task', item);
+            } else if (e.target.classList.contains('toggle-task')) {
+                const tasks = Storage.get(STORAGE_KEYS.TASKS);
+                const task = tasks.find(t => t.id === id);
+                if (task) { task.completed = !task.completed; Storage.set(STORAGE_KEYS.TASKS, tasks); renderTasks(); renderDashboard(); }
             }
         });
 
-        // --- Переключение вкладок ---
+        // Поиск
+        document.getElementById('search-contacts')?.addEventListener('input', e => { searchTerms.contacts = e.target.value; renderContacts(); });
+        document.getElementById('search-deals')?.addEventListener('input', e => { searchTerms.deals = e.target.value; renderDeals(); });
+        document.getElementById('search-tasks')?.addEventListener('input', e => { searchTerms.tasks = e.target.value; renderTasks(); });
+        document.getElementById('search-comments')?.addEventListener('input', e => { searchTerms.comments = e.target.value; renderComments(); });
+
+        // Переключение вкладок
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                const targetId = tab.dataset.tab;
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById(targetId).classList.add('active');
-                currentTab = targetId;
+                document.getElementById(tab.dataset.tab).classList.add('active');
             });
         });
 
-        // --- Обучение (тур) ---
-        const tourModal = document.getElementById('tourModal');
-        const tourTitle = document.getElementById('tourTitle');
-        const tourText = document.getElementById('tourText');
-        const tourPrev = document.getElementById('tourPrev');
-        const tourNext = document.getElementById('tourNext');
-        const tourClose = document.getElementById('tourClose');
-        let tourStep = 0;
-
-        const steps = [
-            { title: '👋 Добро пожаловать!', text: 'Это простая CRM, которая поможет не забывать о клиентах и продажах. Я проведу короткий тур.' },
-            { title: '🏠 Главная', text: 'Здесь вы видите общую картину: сколько клиентов, продаж, напоминаний. Также здесь есть быстрые кнопки для добавления.' },
-            { title: '👥 Клиенты', text: 'На вкладке «Клиенты» вы добавляете всех, с кем работаете. Нажмите «➕ Добавить клиента», заполните имя — готово.' },
-            { title: '💰 Продажи', text: 'В разделе «Продажи» создаёте то, что продаёте. Укажите название, сумму и этап (например, «Переговоры»).' },
-            { title: '⏰ Напоминания', text: 'Здесь планируете звонки и встречи. В нужный день они появятся на главной. Не пропустите!' },
-            { title: '✨ Всё!', text: 'Теперь вы готовы работать. Если что-то непонятно — нажмите кнопку «?» вверху, и тур запустится снова.' }
-        ];
-
-        function showTourStep(step) {
-            if (step < 0 || step >= steps.length) {
-                tourModal.classList.remove('active');
-                return;
-            }
-            tourTitle.innerText = steps[step].title;
-            tourText.innerText = steps[step].text;
-            tourPrev.style.display = step === 0 ? 'none' : 'inline-block';
-            tourNext.innerText = step === steps.length - 1 ? 'Завершить' : 'Далее';
-        }
-
-        function startTour() {
-            tourStep = 0;
-            showTourStep(tourStep);
-            tourModal.classList.add('active');
-        }
-
-        // При первом запуске показываем тур
+        // ========== Обучение (тур) ==========
+        const tour = document.getElementById('tour-overlay');
         if (!localStorage.getItem(STORAGE_KEYS.TOUR_DONE)) {
-            setTimeout(startTour, 300);
-            localStorage.setItem(STORAGE_KEYS.TOUR_DONE, 'true');
+            tour.style.display = 'flex';
         }
+        document.getElementById('close-tour').onclick = () => {
+            tour.style.display = 'none';
+            localStorage.setItem(STORAGE_KEYS.TOUR_DONE, 'true');
+        };
 
-        document.getElementById('helpButton').addEventListener('click', startTour);
-
-        tourNext.addEventListener('click', () => {
-            if (tourStep === steps.length - 1) {
-                tourModal.classList.remove('active');
-            } else {
-                tourStep++;
-                showTourStep(tourStep);
-            }
-        });
-
-        tourPrev.addEventListener('click', () => {
-            if (tourStep > 0) {
-                tourStep--;
-                showTourStep(tourStep);
-            }
-        });
-
-        tourClose.addEventListener('click', () => {
-            tourModal.classList.remove('active');
-        });
-
-        // Закрытие модалки тура при клике вне (но лучше не надо, оставим так)
-        window.addEventListener('click', (e) => {
-            if (e.target === tourModal) {
-                tourModal.classList.remove('active');
-            }
-        });
-
-        // --- Инициализация ---
+        // ========== Старт ==========
         renderAll();
-
-        // Автоматическая проверка напоминаний
-        (function checkReminders() {
-            const reminders = Storage.get(STORAGE_KEYS.REMINDERS);
-            const today = reminders.filter(r => !r.completed && isToday(r.dueDate));
-            if (today.length > 0) {
-                // Можно ненавязчиво показать уведомление (но не alert, чтобы не раздражать)
-                const hint = document.getElementById('dashboardHint');
-                hint.innerHTML = `🔔 <strong>На сегодня ${today.length} напоминаний!</strong> Не забудьте позвонить клиентам.`;
-            }
-        })();
     })();
 </script>
 </body>
-    </html>
+</html>
