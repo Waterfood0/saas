@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Simple CRM — светлая/темная тема</title>
+    <title>Simple CRM — монохромные иконки</title>
     <style>
         * {
             margin: 0;
@@ -30,6 +30,8 @@
             --danger: #ef4444;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.06);
+            /* фильтр для монохромных эмодзи */
+            --emoji-filter: grayscale(100%) brightness(0.7);
         }
 
         /* Темная тема */
@@ -50,6 +52,8 @@
             --danger: #ef4444;
             --shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             --shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.4);
+            /* светлее в темной теме */
+            --emoji-filter: grayscale(100%) brightness(1.3);
         }
 
         body {
@@ -67,6 +71,20 @@
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
+        }
+
+        /* Применяем монохромный фильтр ко всем элементам, которые содержат эмодзи,
+           кроме логотипа (чтобы градиент остался цветным) */
+        .tab, .stat-card, .card-title, .section-hint span:first-child,
+        .btn, .add-button, .integration-card, .item-details,
+        .reminder-item, .footer, .theme-option, .badge,
+        .header .plan-tag, .counter, .empty-state, .toggle-task {
+            filter: var(--emoji-filter);
+        }
+
+        /* Логотип оставляем цветным */
+        .logo h1 {
+            filter: none;
         }
 
         /* Адаптация для телефона */
